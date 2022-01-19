@@ -4,7 +4,7 @@ import dash_html_components as html
 import plotly.express as px
 import pandas as pd
 
-app = dash.DASH(__name__)
+app = dash.Dash(__name__)
 df = pd.DataFrame({
 	"Fruit" : ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
 	"Amount" : [4, 1, 2, 2, 4, 5],
