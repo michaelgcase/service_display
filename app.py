@@ -11,7 +11,7 @@ df = pd.DataFrame({
 	"City" : ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
 })
 
-fig = px.bar(df, x="Fruit", y="Amount", color="City", barmore="group")
+fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
 app.layout = html.Div(children=[
 	html.H1(children="Hello Dash"),
 
