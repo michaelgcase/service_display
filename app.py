@@ -1,32 +1,24 @@
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-import plotly.express as px
+from flask import Flask, render_template, request
 import pandas as pd
+import json
+import plotly
+import plotly.express as px
 
-app = dash.Dash(__name__)
-df = pd.DataFrame({
-	"Fruit" : ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-	"Amount" : [4, 1, 2, 2, 4, 5],
-	"City" : ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-})
+app = Flask(__name__)
 
-fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
-app.layout = html.Div(children=[
-	html.H1(children="Hello Dash"),
+@app.route("/callback", methods=['POST', 'GET'])
+def cb():
+	return gm(request.args.get('data'))
 
-	html.Div(children='''
-		Dash: A web application framework for you data
-	'''),
+@app.route("/")
+def index():
+	return render_template('chartsajax.html', graphJSON=gm())
 
-	dcc.Graph(
-		id='example-graph',
-		figure=fig
-	)
-])
+def gm(country="United Kingdom"):
+	df = pd.DataFrame(px.data.gapminder())
+	fig = px.lin(df[df['country']==country], x="year", y="gdpPercap")
 
-if __name__ == '__main__':
-	app.run_server(debug=True)
-
+	graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+	return graphJSON
 
 
